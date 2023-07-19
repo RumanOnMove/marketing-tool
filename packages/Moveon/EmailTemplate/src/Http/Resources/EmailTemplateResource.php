@@ -17,7 +17,6 @@ class EmailTemplateResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'data' => [
                 'id' => $this->id,
                 'name' => $this->name,
                 'subject' => $this->subject,
@@ -25,7 +24,6 @@ class EmailTemplateResource extends JsonResource
                 'placeholders' => $this->placeholders,
                 'content' => $this->content,
                 'status' => $this->status,
-            ],
-        ];
+            ];
     }
 }

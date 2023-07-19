@@ -18,9 +18,9 @@ class EmailTemplateService
      * @param $perPage
      * @return LengthAwarePaginator
      */
-    public function getTemplates($perPage): LengthAwarePaginator
+    public function getTemplates($request): LengthAwarePaginator
     {
-        return $this->emailTemplateRepository->all($perPage);
+        return $this->emailTemplateRepository->all($request);
     }
 
     /**

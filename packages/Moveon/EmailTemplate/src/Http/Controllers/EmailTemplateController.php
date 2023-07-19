@@ -31,10 +31,8 @@ class EmailTemplateController extends Controller
             'per_page' => 'nullable|integer',
         ]);
 
-        $perPage = $request->input('per_page', 10);
-
         # Get data
-        $templates = $this->emailTemplateService->getTemplates($perPage);
+        $templates = $this->emailTemplateService->getTemplates($request);
         $templates = EmailTemplateResource::collection($templates);
 
         # Build collection response for pagination

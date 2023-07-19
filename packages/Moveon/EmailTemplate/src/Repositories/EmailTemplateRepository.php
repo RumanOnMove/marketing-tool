@@ -7,9 +7,13 @@ use Moveon\EmailTemplate\Models\EmailTemplate;
 
 class EmailTemplateRepository
 {
-    public function all($perPage): LengthAwarePaginator
+    public function all($request): LengthAwarePaginator
     {
+        $perPage = $request->input('per_page', 10);
         return EmailTemplate::query()
+            ->when($request->input('name'), function ($query) use($request) {
+                $query->where('name', 'like', '%'. $request->input('name') .'%');
+            })
             ->paginate($perPage);
     }
 
