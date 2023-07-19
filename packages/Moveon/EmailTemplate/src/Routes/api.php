@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Moveon\EmailTemplate\Http\Controllers\EmailTemplateController;
 
-Route::group(['middleware' => ['auth:api'], 'prefix' => 'api/v1/email-templates'], function () {
-
+Route::group(['prefix' => 'api/v1/email-templates'], function () {
+    Route::get('/', [EmailTemplateController::class, 'index']);
+    Route::post('/', [EmailTemplateController::class, 'store']);
 });

@@ -6,9 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class EmailTemplate extends Model
 {
-    protected $table = 'moveon_wallets';
+    protected $table = 'email_templates';
     protected $fillable = [
+        'name',
+        'subject',
+        'type',
+        'placeholders',
+        'content',
+        'status'
+    ];
 
+    protected $casts = [
+        'placeholders' => 'array'
     ];
 
 }
