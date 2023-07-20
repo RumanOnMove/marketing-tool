@@ -42,6 +42,32 @@ class EmailTemplateController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
+    /**
+     * Single email template
+     * @param $id
+     * @return JsonResponse
+     */
+    public function show($id): JsonResponse
+    {
+        # Get data
+        $template = $this->emailTemplateService->getTemplate($id);
+
+        # Check data
+        if (!$template) {
+            # Return response
+            return Response::json([
+                'error' => 'Not found!'
+            ], ResponseAlias::HTTP_NOT_FOUND);
+        }
+
+        $template = new EmailTemplateResource($template);
+
+        # Return response
+        return Response::json([
+            'data' => $template
+        ], ResponseAlias::HTTP_OK);
+    }
+
     /** Storing email template
      * @param Request $request
      * @return JsonResponse
@@ -93,6 +119,7 @@ class EmailTemplateController extends Controller
         # Update data
         $templateU = $this->emailTemplateService->updateTemplate($id, $data);
 
+        # Check data
         if (!$templateU) {
             # Return response
             return Response::json([

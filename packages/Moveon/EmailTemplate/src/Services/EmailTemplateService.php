@@ -24,6 +24,22 @@ class EmailTemplateService
     }
 
     /**
+     * Get a email template
+     * @param $id
+     * @return object|null
+     */
+    public function getTemplate($id): object|null
+    {
+        $template =  $this->emailTemplateRepository->find($id);
+
+        if (!$template) {
+            return null;
+        }
+
+        return $template;
+    }
+
+    /**
      * Create email template
      * @param $data
      * @return mixed
