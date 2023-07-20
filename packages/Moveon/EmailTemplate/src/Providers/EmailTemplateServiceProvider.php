@@ -2,6 +2,8 @@
 
 namespace Moveon\EmailTemplate\Providers;
 
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class EmailTemplateServiceProvider extends ServiceProvider
@@ -21,9 +23,12 @@ class EmailTemplateServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
+        Route::group(['prefix' => 'api', 'middleware' => [SubstituteBindings::class]], function () {
+            $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
+        });
+
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 }

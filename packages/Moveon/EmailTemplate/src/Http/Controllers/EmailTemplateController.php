@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Moveon\EmailTemplate\Http\Resources\EmailTemplateResource;
+use Moveon\EmailTemplate\Models\EmailTemplate;
 use Moveon\EmailTemplate\Services\EmailTemplateService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
@@ -106,15 +107,16 @@ class EmailTemplateController extends Controller
     {
         # Validate Request
         $request->validate([
-            'name'         => 'required|string|max:255|unique:email_templates,name,'.$id,
+            'name'         => 'required|string|max:255|unique:email_templates,name,' . $id,
             'subject'      => 'nullable|string|max:255',
             'type'         => 'nullable|string|max:55',
             'placeholders' => 'nullable|array',
             'content'      => 'nullable|string',
+            'status'      => 'nullable|string|in:' . implode(',', EmailTemplate::STATUS),
         ]);
 
         # Sanitize data
-        $data = $request->only('name', 'subject', 'type', 'placeholders', 'content');
+        $data = $request->only('name', 'subject', 'type', 'placeholders', 'content', 'status');
 
         # Update data
         $templateU = $this->emailTemplateService->updateTemplate($id, $data);
