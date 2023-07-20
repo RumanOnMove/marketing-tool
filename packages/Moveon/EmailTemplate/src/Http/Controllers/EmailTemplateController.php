@@ -134,4 +134,28 @@ class EmailTemplateController extends Controller
             'data' => $templateU
         ], ResponseAlias::HTTP_OK);
     }
+
+    /**
+     * Deleting email template
+     * @param $id
+     * @return JsonResponse
+     */
+    public function destroy($id): JsonResponse
+    {
+        # Delete data
+        $template = $this->emailTemplateService->deleteTemplate($id);
+
+        # Check data
+        if (!$template) {
+            # Return response
+            return Response::json([
+                'error' => 'Not found'
+            ], ResponseAlias::HTTP_NOT_FOUND);
+        }
+
+        # Return response
+        return Response::json([
+            'message' => 'Template deleted successfully!'
+        ], ResponseAlias::HTTP_OK);
+    }
 }

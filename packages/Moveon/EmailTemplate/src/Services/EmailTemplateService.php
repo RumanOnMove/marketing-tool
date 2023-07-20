@@ -66,4 +66,20 @@ class EmailTemplateService
 
        return $template->fresh();
     }
+
+    /**
+     * Delete email template
+     * @param $id
+     * @return bool|null
+     */
+    public function deleteTemplate($id): ?bool
+    {
+        $template = $this->emailTemplateRepository->find($id);
+
+        if (!$template) {
+            return null;
+        }
+
+        return $this->emailTemplateRepository->delete($id);
+    }
 }

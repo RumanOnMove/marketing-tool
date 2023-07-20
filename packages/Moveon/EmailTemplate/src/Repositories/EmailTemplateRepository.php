@@ -33,4 +33,9 @@ class EmailTemplateRepository
     {
         $this->find($id)->update($data);
     }
+
+    public function delete($id): bool|null
+    {
+        return $this->find($id)->delete();
+    }
 }
