@@ -15,7 +15,7 @@ class EmailTemplateService
 
     /**
      * Get all email template
-     * @param $perPage
+     * @param $request
      * @return LengthAwarePaginator
      */
     public function getTemplates($request): LengthAwarePaginator
@@ -31,5 +31,23 @@ class EmailTemplateService
     public function createTemplate($data): mixed
     {
         return $this->emailTemplateRepository->create($data);
+    }
+
+    /**
+     * update email template
+     * @param $id
+     * @param $data
+     * @return object|null
+     */
+    public function updateTemplate($id, $data): object|null
+    {
+       $template = $this->emailTemplateRepository->find($id);
+
+       if (!$template) {
+           return null;
+       }
+        $this->emailTemplateRepository->update($id, $data);
+
+       return $template->fresh();
     }
 }

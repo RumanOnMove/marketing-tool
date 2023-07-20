@@ -48,7 +48,6 @@ class EmailTemplateController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-
         # Validate Request
         $request->validate([
             'name'         => 'required|string|max:255|unique:email_templates,name',
@@ -69,5 +68,43 @@ class EmailTemplateController extends Controller
         return Response::json([
             'data' => $templates
         ], ResponseAlias::HTTP_CREATED);
+    }
+
+    /**
+     * Updating email template
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function update(Request $request, $id): JsonResponse
+    {
+        # Validate Request
+        $request->validate([
+            'name'         => 'required|string|max:255|unique:email_templates,name,'.$id,
+            'subject'      => 'nullable|string|max:255',
+            'type'         => 'nullable|string|max:55',
+            'placeholders' => 'nullable|array',
+            'content'      => 'nullable|string',
+        ]);
+
+        # Sanitize data
+        $data = $request->only('name', 'subject', 'type', 'placeholders', 'content');
+
+        # Update data
+        $templateU = $this->emailTemplateService->updateTemplate($id, $data);
+
+        if (!$templateU) {
+            # Return response
+            return Response::json([
+                'error' => 'Not found'
+            ], ResponseAlias::HTTP_NOT_FOUND);
+        }
+
+        $templateU = new EmailTemplateResource($templateU);
+
+        # Return response
+        return Response::json([
+            'data' => $templateU
+        ], ResponseAlias::HTTP_OK);
     }
 }

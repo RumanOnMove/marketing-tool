@@ -17,8 +17,20 @@ class EmailTemplateRepository
             ->paginate($perPage);
     }
 
+    public function find($id): object|null
+    {
+        return EmailTemplate::query()
+            ->where('id', $id)
+            ->first();
+    }
+
     public function create($data): mixed
     {
         return EmailTemplate::create($data);
+    }
+
+    public function update($id, $data): void
+    {
+        $this->find($id)->update($data);
     }
 }
