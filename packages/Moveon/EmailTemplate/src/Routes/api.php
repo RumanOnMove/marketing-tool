@@ -9,4 +9,5 @@ Route::group(['prefix' => 'v1/email-templates'], function () {
     Route::post('/', [EmailTemplateController::class, 'store']);
     Route::put('/{id}', [EmailTemplateController::class, 'update']);
     Route::delete('/{id}', [EmailTemplateController::class, 'destroy']);
+    Route::post('/send', [EmailTemplateController::class, 'sendMail']);
 });

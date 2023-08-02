@@ -5,8 +5,10 @@ namespace Moveon\EmailTemplate\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use Moveon\EmailTemplate\Http\Resources\EmailTemplateResource;
+use Moveon\EmailTemplate\Mail\CampaignMail;
 use Moveon\EmailTemplate\Models\EmailTemplate;
 use Moveon\EmailTemplate\Services\EmailTemplateService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -77,15 +79,14 @@ class EmailTemplateController extends Controller
     {
         # Validate Request
         $request->validate([
-            'name'         => 'required|string|max:255|unique:email_templates,name',
-            'subject'      => 'nullable|string|max:255',
-            'type'         => 'nullable|string|max:55',
-            'placeholders' => 'nullable|array',
-            'content'      => 'nullable|string',
+            'name'   => 'required|string|max:255|unique:email_templates,name',
+            'design' => 'required|array',
+            'html'   => 'required|string',
+            'status' => 'required|string|in:'.implode(',', EmailTemplate::STATUS),
         ]);
 
         # Sanitize data
-        $data = $request->only('name', 'subject', 'type', 'placeholders', 'content');
+        $data = $request->only('name', 'design', 'html', 'status');
 
         # Create data
         $templates = $this->emailTemplateService->createTemplate($data);
@@ -107,16 +108,14 @@ class EmailTemplateController extends Controller
     {
         # Validate Request
         $request->validate([
-            'name'         => 'required|string|max:255|unique:email_templates,name,' . $id,
-            'subject'      => 'nullable|string|max:255',
-            'type'         => 'nullable|string|max:55',
-            'placeholders' => 'nullable|array',
-            'content'      => 'nullable|string',
-            'status'      => 'nullable|string|in:' . implode(',', EmailTemplate::STATUS),
+            'name'   => 'required|string|max:255|unique:email_templates,name,' . $id,
+            'design' => 'nullable|array',
+            'html'   => 'nullable|string',
+            'status' => 'nullable|string|in:' . implode(',', EmailTemplate::STATUS),
         ]);
 
         # Sanitize data
-        $data = $request->only('name', 'subject', 'type', 'placeholders', 'content', 'status');
+        $data = $request->only('name', 'design', 'html', 'status');
 
         # Update data
         $templateU = $this->emailTemplateService->updateTemplate($id, $data);
@@ -159,5 +158,11 @@ class EmailTemplateController extends Controller
         return Response::json([
             'message' => 'Template deleted successfully!'
         ], ResponseAlias::HTTP_OK);
+    }
+
+    public function sendMail() {
+        # Get data
+        $template = $this->emailTemplateService->getTemplate(3);
+        Mail::to('user@example.com')->send(new CampaignMail($template->html));
     }
 }

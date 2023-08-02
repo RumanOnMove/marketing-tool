@@ -12,25 +12,21 @@ class EmailTemplate extends Model
     protected $table = 'email_templates';
     protected $fillable = [
         'name',
-        'subject',
-        'type',
-        'placeholders',
-        'content',
+        'design',
+        'html',
         'status'
     ];
 
     const STATUS_DRAFT = 'draft';
     const STATUS_ACTIVE = 'active';
-    const STATUS_DELETE = 'delete';
 
     const STATUS = [
         self::STATUS_DRAFT,
         self::STATUS_ACTIVE,
-        self::STATUS_DELETE
     ];
 
     protected $casts = [
-        'placeholders' => 'array'
+        'design' => 'array'
     ];
 
 }

@@ -17,12 +17,10 @@ class EmailTemplateResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-                'id' => $this->id,
-                'name' => $this->name,
-                'subject' => $this->subject,
-                'type' => $this->type,
-                'placeholders' => $this->placeholders,
-                'content' => $this->content,
+                'id'     => $this->id,
+                'name'   => $this->name,
+                'design' => $this->design,
+                'html'   => $this->html,
                 'status' => $this->status,
             ];
     }

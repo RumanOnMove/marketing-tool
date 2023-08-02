@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('email_templates', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('subject')->nullable();
-            $table->string('type')->nullable();
-            $table->text('content')->nullable();
-            $table->json('placeholders')->nullable();
+            $table->json('design');
+            $table->text('html');
             $table->string('status')->default('draft');
             $table->softDeletes();
             $table->timestamps();
