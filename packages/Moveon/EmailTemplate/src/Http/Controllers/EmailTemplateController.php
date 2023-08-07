@@ -163,6 +163,7 @@ class EmailTemplateController extends Controller
     public function sendMail() {
         # Get data
         $template = $this->emailTemplateService->getTemplate(3);
+        dd($template);
         Mail::to('user@example.com')->send(new CampaignMail($template->html));
     }
 }
