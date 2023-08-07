@@ -25,7 +25,8 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Moveon\\EmailTemplate\\": "packages/Moveon/EmailTemplate/src/"
+            "Moveon\\EmailTemplate\\": "packages/Moveon/EmailTemplate/src/",
+            "Moveon\\Image\\": "packages/Moveon/Image/src/"
         }
     },
     "autoload-dev": {
