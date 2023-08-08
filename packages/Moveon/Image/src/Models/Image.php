@@ -3,6 +3,7 @@
 namespace Moveon\Image\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Image extends Model
 {
@@ -12,4 +13,10 @@ class Image extends Model
         'type',
         'link'
     ];
+
+    # Categories
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'category_image');
+    }
 }
