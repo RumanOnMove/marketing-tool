@@ -15,4 +15,8 @@ class ImageRepository
             })
             ->paginate($perPage);
     }
+
+    public function create($data) {
+        return Image::create($data);
+    }
 }
