@@ -25,6 +25,14 @@ class FeatureEmailTemplate extends Model
         self::STATUS_ACTIVE,
     ];
 
+    const SORT_BY_NAME = 'name';
+    const SORT_BY_DATE = 'date';
+
+    const SORT_BY = [
+        self::SORT_BY_NAME,
+        self::SORT_BY_DATE,
+    ];
+
     protected $casts = [
         'design' => 'array'
     ];

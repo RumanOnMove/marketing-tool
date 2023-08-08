@@ -30,8 +30,9 @@ class EmailTemplateController extends Controller
     {
         # Validate Request
         $request->validate([
-            'name' => 'nullable|string|max:255',
+            'name'     => 'nullable|string|max:255',
             'per_page' => 'nullable|integer',
+            'sort_by'  => 'nullable|string|in:' . implode(',', EmailTemplate::SORT_BY),
         ]);
 
         # Get data

@@ -14,6 +14,15 @@ class FeatureEmailTemplateRepository
             ->when($request->input('name'), function ($query) use($request) {
                 $query->where('name', 'like', '%'. $request->input('name') .'%');
             })
+            ->when($request->input('sort_by'), function ($query) use($request) {
+                if ($request->input('sort_by') === 'name') {
+                    $query->orderBy('name', 'ASC');
+                }
+
+                if ($request->input('sort_by') === 'date') {
+                    $query->orderBy('created_at', 'ASC');
+                }
+            })
             ->paginate($perPage);
     }
 
