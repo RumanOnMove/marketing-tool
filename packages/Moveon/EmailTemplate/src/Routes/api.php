@@ -14,7 +14,7 @@ Route::group(['prefix' => 'v1/email-templates'], function () {
     Route::post('/send', [EmailTemplateController::class, 'sendMail']);
 });
 
-Route::group(['prefix' => 'v1/features-email-templates'], function () {
+Route::group(['prefix' => 'v1/feature-email-templates'], function () {
     Route::get('/', [FeatureEmailTemplateController::class, 'index']);
     Route::get('/{id}', [FeatureEmailTemplateController::class, 'show']);
     Route::post('/{id}/attach-to-my-template', [FeatureEmailTemplateController::class, 'addToMyTemplates']);

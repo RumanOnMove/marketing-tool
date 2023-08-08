@@ -5,6 +5,7 @@ namespace Moveon\Image\Providers;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Moveon\Image\Commands\CategorySeedCommand;
 
 class ImageServiceProvider extends ServiceProvider
 {
@@ -13,9 +14,11 @@ class ImageServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        # ...
+        if ($this->app->runningInConsole()) {
+            $this->registerCommands();
+        }
     }
 
     /**
@@ -30,5 +33,16 @@ class ImageServiceProvider extends ServiceProvider
         });
 
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+    }
+
+    /**
+     * Register package commands
+     * @return void
+     */
+    public function registerCommands(): void
+    {
+        $this->commands([
+            CategorySeedCommand::class
+        ]);
     }
 }
