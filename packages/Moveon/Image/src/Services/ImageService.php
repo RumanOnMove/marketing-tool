@@ -32,8 +32,9 @@ class ImageService
 
     /**
      * @param $request
+     * @return false|mixed
      */
-    public function createImage($request)
+    public function createImage($request): mixed
     {
         # Get info from image
         $image             = $request->file('image');
@@ -54,22 +55,27 @@ class ImageService
         try {
             DB::beginTransaction();
             $image = $this->imageRepository->create($data);
-            if ($image) {
-                # Attach image with category
-                $image->categories()->attach($request->input('category'));
 
-                DB::commit();
-
-                # Return fresh image
-                return $image;
+            if (!$image) {
+                throw new Exception('Could not create image. Please try later');
             }
-            throw new Exception('Could not create image. Please try later');
+
+            # Attach image with category
+            $categories = [10];
+            if ($request->input('categories')) {
+                $categories = $request->input('categories');
+            }
+            $image->categories()->attach($categories);
+
+            DB::commit();
+
+            # Return fresh image
+            return $image;
+
         } catch (Exception $ex) {
             DB::rollBack();
             Log::critical($ex->getMessage());
-            return [
-                'error' => $ex->getMessage()
-            ];
+            return false;
         }
     }
 

@@ -22,7 +22,8 @@ class ImageRepository
             ->paginate($perPage);
     }
 
-    public function create($data) {
+    public function create($data): mixed
+    {
         return Image::create($data);
     }
 

@@ -54,12 +54,20 @@ class ImageController extends Controller
     {
         # Validate data
         $request->validate([
-            'image'    => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'category' => 'nullable|integer|in:' . implode(',', Category::all()->pluck('id')->toArray())
+            'image'        => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'categories'   => 'nullable|array',
+            'categories.*' => 'nullable|integer|in:' . implode(',', Category::all()->pluck('id')->toArray())
         ]);
 
         # Create image
         $image = $this->imageService->createImage($request);
+
+        if (!$image) {
+            # Return response
+            return Response::json([
+                'error' => 'Could not create image. Please try later.'
+            ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         # Load categories
         $image = $image->load('categories');
