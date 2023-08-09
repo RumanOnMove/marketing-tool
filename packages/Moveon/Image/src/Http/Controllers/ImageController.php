@@ -99,4 +99,41 @@ class ImageController extends Controller
             'data' => $image
         ], ResponseAlias::HTTP_OK);
     }
+
+    /**
+     * Update image
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     */
+    public function update(Request $request, $id): JsonResponse
+    {
+        # Validate data
+        $request->validate([
+            'categories'   => 'required|array',
+            'categories.*' => 'required|in:' . implode(',', Category::all()->pluck('id')->toArray())
+        ]);
+
+        # Sanitize data
+        $data = $request->input('categories');
+
+        $imageU = $this->imageService->updateImage($id, $data);
+
+        # If not update
+        if (!$imageU) {
+            # Return response
+            return Response::json([
+                'error' => 'Could not update image. Please try later.'
+            ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $imageU = $imageU->fresh();
+        # Transform image
+        $imageU = new ImageResource($imageU->load('categories'));
+
+        # Return response
+        return Response::json([
+            'data' => $imageU
+        ], ResponseAlias::HTTP_OK);
+    }
 }

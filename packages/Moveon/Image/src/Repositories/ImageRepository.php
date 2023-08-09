@@ -31,4 +31,8 @@ class ImageRepository
         return Image::query()
             ->find($id);
     }
+
+    public function update($image, $data) {
+        return $image->categories()->sync($data);
+    }
 }

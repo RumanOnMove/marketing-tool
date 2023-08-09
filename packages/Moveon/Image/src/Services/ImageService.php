@@ -88,4 +88,26 @@ class ImageService
 
         return $image;
     }
+
+    /**
+     * Update image
+     * @param $id
+     * @param $data
+     * @return Model|Collection|Builder|bool|array|null
+     */
+    public function updateImage($id, $data): Model|Collection|Builder|bool|array|null
+    {
+        $image = $this->getImage($id);
+
+        if (!$image) {
+            return null;
+        }
+
+        $imageU = $this->imageRepository->update($image, $data);
+        if (!$imageU) {
+            return false;
+        }
+
+        return $image;
+    }
 }
