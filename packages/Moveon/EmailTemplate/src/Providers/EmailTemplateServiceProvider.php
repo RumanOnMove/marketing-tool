@@ -17,8 +17,8 @@ class EmailTemplateServiceProvider extends ServiceProvider
     public function register()
     {
         Str::macro('replacePlaceholder', function ($originalStr, $placeholders) {
-            foreach ($placeholders as $placeholder => $value) {
-                $originalStr = Str::replace('{'.$placeholder.'}', $value, $originalStr);
+            foreach ($placeholders as $placeholder) {
+                $originalStr = Str::replace(key($placeholder), $placeholder[key($placeholder)], $originalStr);
             }
             return $originalStr;
         });

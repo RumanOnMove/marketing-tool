@@ -7,9 +7,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
 use Moveon\EmailTemplate\Http\Resources\EmailTemplateResource;
 use Moveon\EmailTemplate\Mail\CampaignMail;
 use Moveon\EmailTemplate\Models\EmailTemplate;
+use Moveon\EmailTemplate\Models\EmailTemplateTag;
 use Moveon\EmailTemplate\Services\EmailTemplateService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
@@ -163,8 +165,23 @@ class EmailTemplateController extends Controller
 
     public function sendMail() {
         # Get data
-        $template = $this->emailTemplateService->getTemplate(3);
-        dd($template);
-        Mail::to('user@example.com')->send(new CampaignMail($template->html));
+        $template = $this->emailTemplateService->getTemplate(7);
+        $tags = EmailTemplateTag::select('value')->get();
+        $placeholders = [];
+        foreach ($tags as $tag) {
+            switch ($tag) {
+                case $tag->value['value'] === '{{first_name}}':
+                    $placeholders[] = [$tag->value['value'] => 'John'];
+                    break;
+                case  $tag->value['value'] === '{{last_name}}':
+                    $placeholders[] = [$tag->value['value'] => 'Doe'];
+                    break;
+                case $tag->value['value'] === '{{company_name}}':
+                    $placeholders[] = [$tag->value['value'] => 'SpaceX'];
+                    break;
+            }
+        }
+        $emailTemplate = Str::replacePlaceholder($template->html, $placeholders);
+        Mail::to('user@example.com')->send(new CampaignMail($emailTemplate));
     }
 }
