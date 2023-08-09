@@ -19,7 +19,22 @@ class ImageRepository
             ->when($request->input('name'), function ($query) use($request) {
                 $query->where('name', 'like', '%'. $request->input('name'. '%'));
             })
+            ->when($request->input('category'), function ($query) use($request) {
+                $query->whereHas('categories', function ($query) use($request) {
+                    $query->where('categories.id', $request->input('category'));
+                });
+            })
+            ->when($request->input('sort_by'), function ($query) use($request) {
+                if ($request->input('sort_by') === 'name') {
+                    $query->orderBy('name', 'ASC');
+                }
+
+                if ($request->input('sort_by') === 'date') {
+                    $query->orderBy('created_at', 'ASC');
+                }
+            })
             ->with('categories')
+            ->latest()
             ->paginate($perPage);
     }
 
