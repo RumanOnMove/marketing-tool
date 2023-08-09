@@ -18,7 +18,7 @@ class ImageResource extends JsonResource
             'id'   => $this->id,
             'name' => $this->name,
             'type' => $this->type,
-            'link' => 'storage/' . $this->link,
+            'link' => asset('storage/' . $this->link),
             'categories' => CategoryResource::collection($this->whenLoaded('categories'))
         ];
     }

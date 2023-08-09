@@ -9,4 +9,5 @@ Route::group(['prefix' => 'v1/images'], function () {
     Route::post('/', [ImageController::class, 'store']);
     Route::get('/{id}', [ImageController::class, 'show']);
     Route::put('/{id}', [ImageController::class, 'update']);
+    Route::delete('/{id}', [ImageController::class, 'destroy']);
 });

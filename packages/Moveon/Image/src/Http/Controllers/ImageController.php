@@ -144,4 +144,27 @@ class ImageController extends Controller
             'data' => $imageU
         ], ResponseAlias::HTTP_OK);
     }
+
+    /**
+     * Delete image
+     * @param $id
+     * @return JsonResponse
+     */
+    public function destroy($id): JsonResponse
+    {
+        $imageD = $this->imageService->deleteImage($id);
+
+        # If not delete
+        if (!$imageD) {
+            # Return response
+            return Response::json([
+                'error' => 'Could not delete image. Please try later.'
+            ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        # Return response
+        return Response::json([
+            'message' => 'Image deleted successfully.'
+        ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
+    }
 }

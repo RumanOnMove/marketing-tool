@@ -6,6 +6,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Moveon\Image\Models\Image;
 
 class ImageRepository
@@ -35,5 +36,12 @@ class ImageRepository
 
     public function update($image, $data) {
         return $image->categories()->sync($data);
+    }
+
+    public function delete($image) {
+        $categoryIds = $image->categories()->pluck('categories.id')->toArray();
+        $image->categories()->detach($categoryIds);
+        Storage::delete('public/'.$image->link);
+        return $image->delete();
     }
 }

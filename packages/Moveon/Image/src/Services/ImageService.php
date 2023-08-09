@@ -116,4 +116,20 @@ class ImageService
 
         return $image;
     }
+
+    public function deleteImage($id) {
+        $image = $this->getImage($id);
+
+        if (!$image) {
+            return null;
+        }
+
+        $image = $this->imageRepository->delete($image);
+
+        if (!$image) {
+            return false;
+        }
+
+        return true;
+    }
 }
