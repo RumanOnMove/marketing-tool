@@ -35,6 +35,7 @@ class ImageController extends Controller
 
         # Get data
         $images = $this->imageService->getImages($request);
+        # Transform image
         $images = ImageResource::collection($images);
 
         # Build collection response for pagination
@@ -44,7 +45,13 @@ class ImageController extends Controller
         return Response::json($response, ResponseAlias::HTTP_OK);
     }
 
-    public function store(Request $request) {
+    /**
+     * Store image
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function store(Request $request): JsonResponse
+    {
         # Validate data
         $request->validate([
             'image'    => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -53,6 +60,15 @@ class ImageController extends Controller
 
         # Create image
         $image = $this->imageService->createImage($request);
-        dd($image);
+
+        # Load categories
+        $image = $image->load('categories');
+        # Transform image
+        $image = new ImageResource($image);
+
+        # Return response
+        return Response::json([
+            'data' => $image
+        ], ResponseAlias::HTTP_CREATED);
     }
 }

@@ -13,6 +13,7 @@ class ImageRepository
             ->when($request->input('name'), function ($query) use($request) {
                 $query->where('name', 'like', '%'. $request->input('name'. '%'));
             })
+            ->with('categories')
             ->paginate($perPage);
     }
 

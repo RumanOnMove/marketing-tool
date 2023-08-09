@@ -5,7 +5,7 @@ namespace Moveon\Image\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ImageResource extends JsonResource
+class CategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +17,7 @@ class ImageResource extends JsonResource
         return [
             'id'   => $this->id,
             'name' => $this->name,
-            'type' => $this->type,
-            'link' => 'storage/' . $this->link,
-            'categories' => CategoryResource::collection($this->whenLoaded('categories'))
+            'slug' => $this->slug,
         ];
     }
 }

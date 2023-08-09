@@ -53,7 +53,7 @@ class ImageService
             $image = $this->imageRepository->create($data);
             if ($image) {
                 # Attach image with category
-                $image->categories()->attach($request->file('category'));
+                $image->categories()->attach($request->input('category'));
 
                 DB::commit();
 
