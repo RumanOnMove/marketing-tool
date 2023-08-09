@@ -71,4 +71,32 @@ class ImageController extends Controller
             'data' => $image
         ], ResponseAlias::HTTP_CREATED);
     }
+
+    /**
+     * Show image
+     * @param $id
+     * @return JsonResponse
+     */
+    public function show($id): JsonResponse
+    {
+        # Get data
+        $image = $this->imageService->getImage($id);
+
+        # Check data
+        if (!$image) {
+            return Response::json([
+                'error' => 'Not found!'
+            ], ResponseAlias::HTTP_NOT_FOUND);
+        }
+
+        # Load categories
+        $image = $image->load('categories');
+        # Transform image
+        $image = new ImageResource($image);
+
+        # Return response
+        return Response::json([
+            'data' => $image
+        ], ResponseAlias::HTTP_OK);
+    }
 }

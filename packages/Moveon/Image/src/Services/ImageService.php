@@ -4,6 +4,9 @@ namespace Moveon\Image\Services;
 
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Moveon\Image\Repositories\ImageRepository;
@@ -68,5 +71,21 @@ class ImageService
                 'error' => $ex->getMessage()
             ];
         }
+    }
+
+    /**
+     * Get Image
+     * @param $id
+     * @return Model|Collection|Builder|array|null
+     */
+    public function getImage($id): Model|Collection|Builder|array|null
+    {
+        $image = $this->imageRepository->find($id);
+
+        if (!$image) {
+            return null;
+        }
+
+        return $image;
     }
 }
