@@ -12,6 +12,7 @@ use Moveon\EmailTemplate\Http\Resources\EmailTemplateResource;
 use Moveon\EmailTemplate\Mail\CampaignMail;
 use Moveon\EmailTemplate\Models\EmailTemplate;
 use Moveon\EmailTemplate\Models\EmailTemplateTag;
+use Moveon\EmailTemplate\Models\FeatureEmailTemplate;
 use Moveon\EmailTemplate\Services\EmailTemplateService;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 

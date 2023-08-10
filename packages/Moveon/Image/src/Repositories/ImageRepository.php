@@ -17,7 +17,7 @@ class ImageRepository
 
         return Image::query()
             ->when($request->input('name'), function ($query) use($request) {
-                $query->where('name', 'like', '%'. $request->input('name'. '%'));
+                $query->where('name', 'like', '%'. $request->input('name'). '%');
             })
             ->when($request->input('category'), function ($query) use($request) {
                 $query->whereHas('categories', function ($query) use($request) {

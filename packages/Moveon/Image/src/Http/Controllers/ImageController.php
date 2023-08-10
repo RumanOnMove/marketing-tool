@@ -31,6 +31,7 @@ class ImageController extends Controller
         $request->validate([
             'name'     => 'nullable|string',
             'per_page' => 'nullable|integer',
+            'sort_by'  => 'nullable',
         ]);
 
         # Get data

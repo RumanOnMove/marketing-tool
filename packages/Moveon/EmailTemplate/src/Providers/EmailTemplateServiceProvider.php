@@ -6,6 +6,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Moveon\EmailTemplate\Commands\FeatureTemplateSeedCommand;
 
 class EmailTemplateServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,10 @@ class EmailTemplateServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if ($this->app->runningInConsole()) {
+            $this->registerCommands();
+        }
+
         Str::macro('replacePlaceholder', function ($originalStr, $placeholders) {
             foreach ($placeholders as $placeholder) {
                 $originalStr = Str::replace(key($placeholder), $placeholder[key($placeholder)], $originalStr);
@@ -36,5 +41,16 @@ class EmailTemplateServiceProvider extends ServiceProvider
         });
 
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+    }
+
+    /**
+     * Register package commands
+     * @return void
+     */
+    public function registerCommands(): void
+    {
+        $this->commands([
+            FeatureTemplateSeedCommand::class
+        ]);
     }
 }

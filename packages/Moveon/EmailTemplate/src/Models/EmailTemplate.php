@@ -18,11 +18,11 @@ class EmailTemplate extends Model
     ];
 
     const STATUS_DRAFT = 'draft';
-    const STATUS_ACTIVE = 'active';
+    const STATUS_ACTIVATE = 'activate';
 
     const STATUS = [
         self::STATUS_DRAFT,
-        self::STATUS_ACTIVE,
+        self::STATUS_ACTIVATE,
     ];
 
     const SORT_BY_NAME = 'name';
